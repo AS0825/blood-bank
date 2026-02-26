@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -8,21 +10,13 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    const storedUser = localStorage.getItem(email);
-
-    if (!storedUser) {
-      alert("User not found!");
-      return;
-    }
-
-    const user = JSON.parse(storedUser);
-
-    if (user.password === password) {
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
       alert("Login Successful!");
       router.push("/dashboard");
-    } else {
-      alert("Incorrect Password!");
+    } catch (error: any) {
+      alert("Invalid Credentials");
     }
   };
 
@@ -49,7 +43,7 @@ export default function Login() {
 
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800"
+          className="w-full bg-blue-700 text-white py-2 rounded"
         >
           Login
         </button>

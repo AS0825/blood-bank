@@ -1,79 +1,59 @@
 "use client";
 
 import { useState } from "react";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Register() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    bloodGroup: ""
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = () => {
-    if (form.password !== form.confirmPassword) {
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
-    localStorage.setItem(form.email, JSON.stringify(form));
-    alert("Registration Successful!");
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Registration Successful!");
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="bg-white p-8 rounded shadow w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-red-700">
-          Donor Registration
+          Register
         </h2>
-
-        <input
-          type="text"
-          placeholder="Full Name"
-          className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setForm({...form, name: e.target.value})}
-        />
 
         <input
           type="email"
           placeholder="Email"
           className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setForm({...form, email: e.target.value})}
+          onChange={(e) => setEmail(e.target.value)}
         />
-
-        <select
-          className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setForm({...form, bloodGroup: e.target.value})}
-        >
-          <option value="">Select Blood Group</option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>O+</option>
-          <option>O-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-        </select>
 
         <input
           type="password"
           placeholder="Password"
           className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setForm({...form, password: e.target.value})}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Confirm Password"
           className="w-full p-2 border rounded mb-4"
-          onChange={(e) => setForm({...form, confirmPassword: e.target.value})}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
 
         <button
-          onClick={handleSubmit}
-          className="w-full bg-red-700 text-white py-2 rounded hover:bg-red-800"
+          onClick={handleRegister}
+          className="w-full bg-red-700 text-white py-2 rounded"
         >
           Register
         </button>
