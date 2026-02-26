@@ -1,31 +1,25 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function Dashboard() {
+  const router = useRouter();
+
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
-      <h1 className="text-3xl font-bold text-red-700 mb-6">
-        Blood Stock Overview
-      </h1>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>Welcome to Blood Bank 🩸</h1>
 
-      <div className="grid md:grid-cols-4 gap-6">
-        <div className="bg-white p-6 shadow rounded text-center">
-          <h2 className="text-xl font-bold text-red-600">A+</h2>
-          <p>Available Units: 25</p>
-        </div>
+      <br />
 
-        <div className="bg-white p-6 shadow rounded text-center">
-          <h2 className="text-xl font-bold text-blue-600">B+</h2>
-          <p>Available Units: 18</p>
-        </div>
+      <button onClick={() => router.push("/donor")}>
+        Become a Donor
+      </button>
 
-        <div className="bg-white p-6 shadow rounded text-center">
-          <h2 className="text-xl font-bold text-green-600">O+</h2>
-          <p>Available Units: 32</p>
-        </div>
+      <br /><br />
 
-        <div className="bg-white p-6 shadow rounded text-center">
-          <h2 className="text-xl font-bold text-purple-600">AB+</h2>
-          <p>Available Units: 10</p>
-        </div>
-      </div>
+      <button onClick={() => router.push("/request")}>
+        Request Blood
+      </button>
     </div>
   );
 }

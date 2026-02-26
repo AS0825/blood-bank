@@ -3,27 +3,21 @@
 import { useState } from "react";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
+      await signInWithEmailAndPassword(auth, email.trim(), password);
       alert("Login Successful ✅");
+      router.push("/dashboard"); // go to dashboard
     } catch (error: any) {
-      if (error.code === "auth/user-not-found") {
-        alert("User not registered");
-      } else if (error.code === "auth/wrong-password") {
-        alert("Wrong password");
-      } else {
-        alert(error.message);
-      }
+      alert("Invalid credentials ❌");
     }
   };
 
@@ -45,9 +39,7 @@ export default function Login() {
       />
       <br /><br />
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
+      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }
