@@ -1,30 +1,39 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { supabase } from "@/lib/supabase"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Login() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const router = useRouter()
+  const router = useRouter();
+  const [email, setEmail] = useState("");
 
-  const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (error) alert(error.message)
-    else router.push("/dashboard")
-  }
+  const handleLogin = () => {
+    if (email) {
+      router.push("/dashboard");
+    }
+  };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <input placeholder="Email" onChange={(e)=>setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e)=>setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Login</button>
+    <div className="min-h-screen flex items-center justify-center bg-blue-500">
+      <div className="bg-white p-8 rounded-xl shadow-xl w-80">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+          Login
+        </h2>
+
+        <input
+          type="email"
+          placeholder="Enter Email"
+          className="w-full p-2 border rounded mb-4"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <button
+          onClick={handleLogin}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          Login
+        </button>
+      </div>
     </div>
-  )
+  );
 }

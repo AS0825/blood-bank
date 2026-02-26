@@ -1,47 +1,31 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#f8f9fa"
-    }}>
-      <h1 style={{ fontSize: "40px", color: "#b30000" }}>
+    <div className="min-h-screen bg-gradient-to-r from-red-400 via-pink-500 to-purple-500 flex flex-col items-center justify-center text-white">
+
+      <h1 className="text-5xl font-bold mb-6 drop-shadow-lg">
         🩸 Blood Bank Management System
       </h1>
 
-      <p style={{ marginTop: "10px", fontSize: "18px" }}>
-        Donate Blood. Save Lives.
+      <p className="text-lg mb-10">
+        Connecting Donors with Lives in Need
       </p>
 
-      <div style={{ marginTop: "20px" }}>
-        <a href="/login">
-          <button style={{
-            padding: "10px 20px",
-            marginRight: "10px",
-            backgroundColor: "#b30000",
-            color: "white",
-            border: "none",
-            borderRadius: "5px"
-          }}>
+      <div className="flex gap-6">
+        <Link href="/login">
+          <button className="px-6 py-3 bg-white text-red-600 font-semibold rounded-lg shadow-lg hover:scale-105 transition">
             Login
           </button>
-        </a>
+        </Link>
 
-        <a href="/signup">
-          <button style={{
-            padding: "10px 20px",
-            backgroundColor: "#555",
-            color: "white",
-            border: "none",
-            borderRadius: "5px"
-          }}>
-            Signup
+        <Link href="/signup">
+          <button className="px-6 py-3 bg-black text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition">
+            Sign Up
           </button>
-        </a>
+        </Link>
       </div>
+
     </div>
   );
 }
