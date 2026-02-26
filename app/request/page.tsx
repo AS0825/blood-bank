@@ -2,42 +2,55 @@
 
 import { useState } from "react";
 
-export default function RequestBlood() {
-  const [bloodGroup, setBloodGroup] = useState("");
+export default function RequestPage() {
+  const [patientName, setPatientName] = useState("");
+  const [requiredBlood, setRequiredBlood] = useState("");
 
   const handleRequest = () => {
-    alert(`Blood request sent for ${bloodGroup}`);
+    if (!patientName || !requiredBlood) {
+      alert("Please fill all details");
+      return;
+    }
+
+    alert(`Blood request submitted for ${patientName} (${requiredBlood}) 🆘`);
+    setPatientName("");
+    setRequiredBlood("");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-100">
-      <div className="bg-white p-8 rounded shadow w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-green-700">
-          Request Blood
-        </h2>
+    <div style={{ textAlign: "center", marginTop: "60px" }}>
+      <h1>Request Blood 🆘</h1>
 
-        <select
-          className="w-full p-2 border rounded mb-4"
-          onChange={(e) => setBloodGroup(e.target.value)}
-        >
-          <option>Select Blood Group</option>
-          <option>A+</option>
-          <option>A-</option>
-          <option>B+</option>
-          <option>B-</option>
-          <option>O+</option>
-          <option>O-</option>
-          <option>AB+</option>
-          <option>AB-</option>
-        </select>
+      <br />
 
-        <button
-          onClick={handleRequest}
-          className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800"
-        >
-          Submit Request
-        </button>
-      </div>
+      <input
+        type="text"
+        placeholder="Patient Name"
+        value={patientName}
+        onChange={(e) => setPatientName(e.target.value)}
+      />
+      <br /><br />
+
+      <select
+        value={requiredBlood}
+        onChange={(e) => setRequiredBlood(e.target.value)}
+      >
+        <option value="">Select Required Blood Group</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>O+</option>
+        <option>O-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+      </select>
+
+      <br /><br />
+
+      <button onClick={handleRequest}>
+        Submit Request
+      </button>
     </div>
   );
 }
