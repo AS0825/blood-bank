@@ -11,74 +11,125 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleRegister = async () => {
-    if (!email || !password || !confirmPassword) {
-      alert("Please fill all fields");
-      return;
-    }
+    setError("");
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match ❌");
-      return;
-    }
-
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters");
+      setError("Passwords do not match ❌");
       return;
     }
 
     try {
-      setLoading(true);
-      await createUserWithEmailAndPassword(
-        auth,
-        email.trim(),
-        password
-      );
-
-      alert("Registration Successful ✅");
+      await createUserWithEmailAndPassword(auth, email.trim(), password);
       router.push("/login");
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
+    } catch (err: any) {
+      setError(err.message);
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "80px" }}>
-      <h1>Register</h1>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.header}>Blood Bank System 🩸</h1>
+        <h3 style={styles.title}>Create your account</h3>
 
-      <br />
+        <label>Email</label>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          style={styles.input}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br /><br />
+        <label>Password</label>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          style={styles.input}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br /><br />
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          placeholder="Confirm your password"
+          style={styles.input}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
-      <br /><br />
+        {error && <p style={styles.error}>{error}</p>}
 
-      <button onClick={handleRegister} disabled={loading}>
-        {loading ? "Registering..." : "Register"}
-      </button>
+        <button style={styles.button} onClick={handleRegister}>
+          Sign Up
+        </button>
+
+        <p style={styles.linkText}>
+          Already have an account?{" "}
+          <span
+            style={styles.link}
+            onClick={() => router.push("/login")}
+          >
+            Login
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(to right, #ff512f, #dd2476)",
+  },
+  card: {
+    background: "#fff",
+    padding: "40px",
+    borderRadius: "10px",
+    width: "350px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+  },
+  header: {
+    textAlign: "center" as const,
+    color: "#dd2476",
+  },
+  title: {
+    textAlign: "center" as const,
+    marginBottom: "20px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+  button: {
+    width: "100%",
+    padding: "10px",
+    background: "#dd2476",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  linkText: {
+    marginTop: "15px",
+    textAlign: "center" as const,
+  },
+  link: {
+    color: "#dd2476",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    marginBottom: "10px",
+  },
+};

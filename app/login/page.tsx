@@ -10,70 +10,113 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
-    setErrorMessage("");
-
-    if (!email || !password) {
-      setErrorMessage("Please fill all fields");
-      return;
-    }
+    setError("");
 
     try {
       await signInWithEmailAndPassword(auth, email.trim(), password);
-      alert("Login Successful ✅");
       router.push("/dashboard");
-    } catch (error: any) {
-      if (error.code === "auth/wrong-password") {
-        setErrorMessage("Wrong password ❌");
-      } 
-      else if (error.code === "auth/user-not-found") {
-        setErrorMessage("User not found. New user? Register now 👇");
-      } 
-      else {
-        setErrorMessage("Invalid credentials");
+    } catch (err: any) {
+      if (err.code === "auth/wrong-password") {
+        setError("Wrong password ❌");
+      } else if (err.code === "auth/user-not-found") {
+        setError("User not found. Please Sign Up.");
+      } else {
+        setError("Invalid credentials");
       }
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "80px" }}>
-      <h1>Login</h1>
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Login to your account</h2>
 
-      <br />
+        <label>Email</label>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          style={styles.input}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="email"
-        placeholder="Enter Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <br /><br />
+        <label>Password</label>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          style={styles.input}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br /><br />
+        {error && <p style={styles.error}>{error}</p>}
 
-      <button onClick={handleLogin}>Login</button>
+        <button style={styles.button} onClick={handleLogin}>
+          Login
+        </button>
 
-      <br /><br />
-
-      {errorMessage && (
-        <div>
-          <p style={{ color: "red" }}>{errorMessage}</p>
-
-          {errorMessage.includes("Register") && (
-            <button onClick={() => router.push("/register")}>
-              Register Now
-            </button>
-          )}
-        </div>
-      )}
+        <p style={styles.linkText}>
+          Don't have an account?{" "}
+          <span
+            style={styles.link}
+            onClick={() => router.push("/register")}
+          >
+            Sign Up
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
+
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "linear-gradient(to right, #ff4e50, #f9d423)",
+  },
+  card: {
+    background: "#fff",
+    padding: "40px",
+    borderRadius: "10px",
+    width: "350px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+  },
+  title: {
+    textAlign: "center" as const,
+    marginBottom: "20px",
+  },
+  input: {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "15px",
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+  },
+  button: {
+    width: "100%",
+    padding: "10px",
+    background: "#ff4e50",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  linkText: {
+    marginTop: "15px",
+    textAlign: "center" as const,
+  },
+  link: {
+    color: "#ff4e50",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    marginBottom: "10px",
+  },
+};
