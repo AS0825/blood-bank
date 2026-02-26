@@ -16,48 +16,45 @@ export default function Register() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      alert("Registration Successful!");
+      await createUserWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password
+      );
+      alert("Registration Successful ✅");
     } catch (error: any) {
       alert(error.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <div className="bg-white p-8 rounded shadow w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-red-700">
-          Register
-        </h2>
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>Register</h1>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <input
+        type="email"
+        placeholder="Enter Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <br /><br />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border rounded mb-3"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <input
+        type="password"
+        placeholder="Enter Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <br /><br />
 
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className="w-full p-2 border rounded mb-4"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+      <br /><br />
 
-        <button
-          onClick={handleRegister}
-          className="w-full bg-red-700 text-white py-2 rounded"
-        >
-          Register
-        </button>
-      </div>
+      <button onClick={handleRegister}>
+        Register
+      </button>
     </div>
   );
 }
