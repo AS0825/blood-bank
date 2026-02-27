@@ -1,39 +1,41 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { auth } from "@/lib/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const router = useRouter();
-  const [name, setName] = useState("");
 
-  const handleSignup = () => {
-    if (name) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSignup = async (e: any) => {
+    e.preventDefault();
+
+    // ✅ FIX: Check password match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Signup successful!");
+      
+      // ✅ FIX: Redirect to login page
       router.push("/login");
+
+    } catch (error: any) {
+      alert(error.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-500">
-      <div className="bg-white p-8 rounded-xl shadow-xl w-80">
-        <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">
-          Sign Up
-        </h2>
-
-        <input
-          type="text"
-          placeholder="Enter Name"
-          className="w-full p-2 border rounded mb-4"
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <button
-          onClick={handleSignup}
-          className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700"
-        >
-          Create Account
-        </button>
-      </div>
-    </div>
+    <form onSubmit={handleSignup}>
+      {/* your inputs */}
+    </form>
   );
 }
